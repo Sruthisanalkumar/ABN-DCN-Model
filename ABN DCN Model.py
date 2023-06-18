@@ -329,10 +329,11 @@ def train(train_loader, model, criterion, optimizer, epoch):
         # inputs, targets = inputs, targets(async=True)
         inputs, targets = torch.autograd.Variable(inputs), torch.autograd.Variable(targets)
         # compute output
-        outputs,x,[x1,x2,x3] = model(inputs)
-        out=print(outputs.shape)
-        tar=print(targets.shape)
-        loss = criterion(outputs, targets)
+        att_outputs, outputs, _  = model(inputs)
+        att_loss = criterion(att_outputs, targets)
+        per_loss = criterion(outputs, targets)
+        loss = att_loss + per_loss
+
        
 
         # measure accuracy and record loss
